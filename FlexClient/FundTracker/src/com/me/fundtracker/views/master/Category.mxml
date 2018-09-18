@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Panel xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 xmlns:components="com.me.fundtracker.components.*" 
+		 xmlns:viewhelpers="com.me.fundtracker.views.master.viewhelpers.*"
+		 width="100%" height="100%" title="Expenditure Category"
+		 initialize="categoryViewHelper.onInit();"
+		 creationComplete="categoryViewHelper.getAllCategoryAndAccountGroups()">
+		<s:layout>
+			<s:HorizontalLayout paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" />
+		</s:layout>
+	
+		<fx:Script>
+			<![CDATA[
+				import com.me.fundtracker.utils.master.MasterGlobeConstants;
+			]]>
+		</fx:Script>
+	
+	<fx:Declarations>
+		<!-- View helper associate with this component -->		
+		<viewhelpers:CategoryViewHelper id="categoryViewHelper" />
+		<!-- Radio group for default account type -->	
+		<s:RadioButtonGroup id="rg_defult" />
+		<!-- Hide / Show effects -->
+		<s:Fade id="fadeOut" alphaFrom="1" alphaTo="0" />
+		<s:Fade id="fadeIn" alphaFrom="0" alphaTo="1" />
+	</fx:Declarations>
+	
+	<s:VGroup width="100%" height="100%" gap="10">
+		<mx:ViewStack id="categoryViewStack" width="100%" height="50">
+			<s:NavigatorContent showEffect="{fadeIn}" hideEffect="{fadeOut}">
+				<s:HGroup width="100%" height="100%" verticalAlign="middle" paddingRight="10">
+					<components:SearchBar id="searchBar" searchListCollection="{categoryViewHelper.model.collCategoryList}" dataGrid="{dg_expensecategory}"/>
+					<s:Spacer width="100%" />
+					<components:ActionButton label="Add New" width="110" click="categoryViewHelper.addNewCategoryDetails();"/>
+					<components:ActionButton label="Edit" width="110" click="categoryViewHelper.editCategoryDetails();"/>
+					<components:ActionButton label="Delete" width="100" click="categoryViewHelper.confirmDeleteExpenseCategory();"/>
+					<components:ActionButton label="Cancel" width="110" click="categoryViewHelper.showHomePage();" />
+				</s:HGroup>
+			</s:NavigatorContent>
+			
+			<s:NavigatorContent showEffect="{fadeIn}" hideEffect="{fadeOut}">
+				<s:HGroup width="100%" gap="15" verticalAlign="middle">					
+					<s:VGroup width="100%" gap="10" verticalAlign="middle">
+						<s:HGroup width="100%" gap="12" verticalAlign="middle">
+							<s:Label text="Group" width="90" />
+							<s:HGroup id="hgrpGroupCheckboxContainer" width="100%" gap="15" verticalAlign="middle" />
+						</s:HGroup>
+						
+						<s:HGroup width="100%" gap="10" verticalAlign="middle">
+							<s:Label text="Description" width="90"/>
+							<s:TextInput id="txt_description" width="300" maxChars="50" />
+							<s:Spacer width="10" />
+							<s:Label text="Default" />
+							<s:RadioButton id="rb_debit" group="{rg_defult}" label="Dr" selected="true" value="{ MasterGlobeConstants.DEFAULT_TYPE_DEBIT }" />
+							<s:RadioButton id="rb_credit" group="{rg_defult}" label="Cr" value="{ MasterGlobeConstants.DEFAULT_TYPE_CREDIT }" />
+						</s:HGroup>
+					</s:VGroup>
+					
+					<s:HGroup width="100%" gap="10" horizontalAlign="center" verticalAlign="middle">
+						<components:ActionButton label="Save" width="100" click="categoryViewHelper.saveCategory();"/>
+						<components:ActionButton label="Save &amp; Continue" width="155" 
+												 enabled="{ !( categoryViewHelper.viewMode == MasterGlobeConstants.EDIT_EXP_CATEGORY_MODE ) }" 
+												 click="categoryViewHelper.saveCategoryDetails();" />
+						<components:ActionButton label="Cancel" width="100" click="categoryViewHelper.showSearchView();" />
+					</s:HGroup>
+				</s:HGroup>
+			</s:NavigatorContent>
+		</mx:ViewStack>
+		
+		<components:GenericDataGrid id="dg_expensecategory" width="100%" height="100%"
+									selectedItem="{categoryViewHelper.model.categoryListGridSelectedItem}"
+									dataProvider="{categoryViewHelper.model.collCategoryList}"
+									doubleClickEnabled="true" doubleClick="categoryViewHelper.editCategoryDetails();">
+			<components:columns>
+				<s:ArrayList>
+					<s:GridColumn headerText="#" dataField="categoryID" />
+					<s:GridColumn headerText="Group Name" dataField="accountGroupName" labelFunction="categoryViewHelper.groupNameLabelFunction;" />
+					<s:GridColumn headerText="Description" dataField="description" />
+					<s:GridColumn headerText="Def. A/c Type" dataField="defaultAccountType" />
+				</s:ArrayList>
+			</components:columns>
+		</components:GenericDataGrid>
+	</s:VGroup>	
+</s:Panel>

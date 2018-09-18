@@ -1,0 +1,63 @@
+/* CSS file */
+@namespace s "library://ns.adobe.com/flex/spark";
+@namespace mx "library://ns.adobe.com/flex/mx";
+
+global{
+	fontFamily:'Arial';
+	fontSize: 12;
+	fontWeight:bold;
+}
+
+s|Application{
+	skinClass:ClassReference("assets.skins.Blue.Application");
+}
+
+s|Button {
+	chromeColor: "0x505050" ; 
+	color: #FFFFFF;
+	iconColor: #e0e0e0;
+	iconScale: 0.75;
+	color: "0xe0e0e0";
+}
+
+s|Button:over {
+	chromeColor: "0x40c0ff" ; 
+	iconColor: #ffffff;
+	color: "0xffffff";
+}
+
+s|Button:down {
+	chromeColor: "0x60e0ff" ;
+	iconColor: #ffffff;
+	color: "0xffffff";
+}
+
+.actionButton {	
+	skinClass: ClassReference('assets.skins.ActionButtonSkin');
+	iconClass: ClassReference("assets.skins.CheckImage");
+	iconColor: #FFFFFF;
+	chromeColor: #305000;
+}
+
+.actionButton:over {
+	chromeColor: #406000;
+}
+
+.actionButton:down {
+	chromeColor: #608000;
+}
+
+.tileGroupButton {	
+	skinClass: ClassReference('assets.skins.TileGroupButtonSkin');
+	iconColor: #FFFFFF;
+	chromeColor: #8C018A;
+}
+
+.tileGroupButton:over {
+	chromeColor: #9E029B;
+}
+
+.tileGroupButton:down {
+	chromeColor: #BF02BC;
+}
+

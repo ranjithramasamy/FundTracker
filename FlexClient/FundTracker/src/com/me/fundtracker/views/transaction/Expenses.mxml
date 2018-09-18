@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Panel xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 xmlns:components="com.me.fundtracker.components.*" 
+		 xmlns:viewhelpers="com.me.fundtracker.views.transaction.viewhelpers.*"
+		 width="100%" height="100%" title="Daily Expense Management"
+		 initialize="expenseViewHelper.onInit();"
+		 creationComplete="expenseViewHelper.onComplete();">
+		<s:layout>
+			<s:HorizontalLayout paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" />
+		</s:layout>
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->		
+		<viewhelpers:ExpenseViewHelper id="expenseViewHelper" />
+	</fx:Declarations>
+	
+	<s:VGroup width="100%" height="100%" gap="10">
+		<s:HGroup width="100%" paddingRight="10">
+			<components:FilterBar id="filter_comp" width="100%" refresh="expenseViewHelper.getAllDailyExpenseDetailsByDate()" />
+			<s:Spacer width="100%" />
+			<components:ActionButton label="Add New" width="110" click="expenseViewHelper.addNewExpense();"/>
+			<components:ActionButton label="Edit" width="110" click="expenseViewHelper.editExpenseDetails();"/>
+			<components:ActionButton label="Delete" width="110" click="expenseViewHelper.confirmDeleteExpenseDetails();"/>
+			<components:ActionButton label="Cancel" width="110" click="expenseViewHelper.showHomePage();" />
+		</s:HGroup>
+		
+		<components:GenericDataGrid id="dg_dailyexpensedetails" width="100%" height="100%"
+									selectedItem="{expenseViewHelper.model.dailyExpenseGridSelectedItem}"
+									dataProvider="{expenseViewHelper.model.collDailyExpenseDetails}"
+									doubleClickEnabled="true" doubleClick="expenseViewHelper.editExpenseDetails();">
+			<components:columns>
+				<s:ArrayList>
+					<s:GridColumn headerText="Date" dataField="date" />
+					<s:GridColumn headerText="Expense Type" dataField="expCategoryType" />
+					<s:GridColumn headerText="Narration" dataField="narration"/>
+					<s:GridColumn headerText="Amount" dataField="amount" labelFunction="{expenseViewHelper.formatAmount}" />
+				</s:ArrayList>
+			</components:columns>
+		</components:GenericDataGrid>
+	</s:VGroup>	
+</s:Panel>

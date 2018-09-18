@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" backgroundColor="gray" 
+			   xmlns:views="com.me.fundtracker.views.*" 
+			   xmlns:business="com.me.fundtracker.business.*" 
+			   xmlns:control="com.me.fundtracker.control.*"
+			   xmlns:master="com.me.fundtracker.control.master.*"
+			   xmlns:transaction="com.me.fundtracker.control.transaction.*"
+			   initialize="onInitialize();" creationComplete="onAppComplete();">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		
+		<business:Services id="services" />
+		<control:LoginController id="controller" />
+		<master:MasterController id="masterController" />
+		<transaction:TransactionController id="transactionController" />
+
+		<s:Fade id="fadeIn" duration="500" alphaFrom="0.0" alphaTo="1.0"/> 
+		<s:Fade id="fadeOut" duration="500" alphaFrom="1.0" alphaTo="0.0"/>
+	</fx:Declarations>
+	
+	<fx:Style source="assets/styles/FundTrackerStyle.css" />
+	
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.view.ViewHelper;
+			import com.adobe.cairngorm.view.ViewLocator;
+			import com.me.fundtracker.events.PopMenuItemClickEvent;
+			import com.me.fundtracker.model.FundTrackerModelLocator;
+			import com.me.fundtracker.utils.EffectsUtil;
+			import com.me.fundtracker.utils.GlobalConstants;
+			import com.me.fundtracker.views.viewhelpers.LoginViewHelper;
+			
+			[Bindable]
+			private var _model : FundTrackerModelLocator = FundTrackerModelLocator.getInstance();
+			private var _effectInstance : EffectsUtil = EffectsUtil.getInstance();
+			
+			private function onInitialize() : void{
+				_model.fundTrackerEventDispatcher.addEventListener(PopMenuItemClickEvent.APPLICATION_EXIT, onAppExitHandler);
+			}
+			
+			private function onAppComplete() : void
+			{
+				_model.NAVIGATIONAL_CONTAINER = navigationContainer;
+			}
+				
+			private function onAppExitHandler( event : PopMenuItemClickEvent ) : void
+			{
+				LoginViewHelper(ViewLocator.getInstance().getViewHelper("loginViewHelper")).reset();
+				_model.CURRENT_VIEW = GlobalConstants.LOGIN_VIEW;				
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:Group width="100%" height="100%">
+		<s:layout>
+			<s:HorizontalLayout horizontalAlign="center" verticalAlign="middle" />
+		</s:layout>
+		
+		<mx:ViewStack width="100%" height="100%" selectedIndex="{_model.CURRENT_VIEW}" creationPolicy="all">
+			<s:NavigatorContent showEffect="{fadeIn}" hideEffect="{fadeOut}">
+				<views:Login id="loginView" />
+			</s:NavigatorContent>	
+			<s:NavigatorContent showEffect="{fadeIn}" hideEffect="{fadeOut}">
+				<views:Home />
+			</s:NavigatorContent>
+			<s:NavigatorContent showEffect="{fadeIn}" hideEffect="{fadeOut}">
+				<s:Group id="navigationContainer" width="100%" height="100%">
+					<s:layout>
+						<s:VerticalLayout paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" />
+					</s:layout>
+				</s:Group>
+			</s:NavigatorContent>
+		</mx:ViewStack>		
+	</s:Group>
+</s:Application>

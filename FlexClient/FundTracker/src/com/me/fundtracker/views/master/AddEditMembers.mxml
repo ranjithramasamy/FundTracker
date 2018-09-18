@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   xmlns:components="com.me.fundtracker.components.*"
+			   xmlns:viewhelpers="com.me.fundtracker.views.master.viewhelpers.*"
+			   width="778" height="525" title="Add Edit Member"
+			   close="addEditMemberHelper.closePopup();"
+			   creationComplete="addEditMemberHelper.onComplete();">
+	<fx:Script>
+		<![CDATA[
+			import com.me.fundtracker.utils.master.MasterGlobeConstants;
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<viewhelpers:AddEditMembersViewHelper id="addEditMemberHelper"/>
+	</fx:Declarations>
+	
+	<s:layout>
+		<s:VerticalLayout gap="10" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10"/>
+	</s:layout>
+	
+	<s:HGroup height="100%">
+		<s:Form width="375" id="frm_leftpane" backgroundColor="#F0F0F0">
+			<s:layout>
+				<s:FormLayout gap="5"/>
+			</s:layout>  
+			<s:FormItem label="First Name">
+				<s:TextInput id="txt_firstname" width="100%" maxChars="50"/>
+			</s:FormItem>
+			<s:FormItem label="Last Name">
+				<s:TextInput id="txt_lastname" width="100%" maxChars="50"/>
+			</s:FormItem>
+			<s:FormItem label="Nick Name">
+				<s:TextInput id="txt_nickname" width="100%" maxChars="50"/>
+			</s:FormItem>
+			<s:FormItem label="Address">
+				<s:TextArea id="txt_address" width="100%" height="66" maxChars="250"/>
+			</s:FormItem>	
+		</s:Form>
+	
+		<s:Form id="frm_rightpane" width="375" backgroundColor="#F0F0F0">
+			<s:layout>
+				<s:FormLayout gap="5"/>
+			</s:layout> 	
+			<s:FormItem label="Gender">
+				<s:HGroup>
+					<s:RadioButton id="rbtn_male" label="Male" selected="true"/>				
+					<s:RadioButton id="rbtn_female" label="Female"/>
+					<s:Spacer width="40" />
+					<s:CheckBox id="chk_active" label="Active" selected="true" />
+				</s:HGroup>
+			</s:FormItem>
+			<s:FormItem label="City">
+				<s:TextInput id="txt_city" width="100%" maxChars="10"/>
+			</s:FormItem>
+			<s:FormItem label="Pincode">
+				<s:TextInput id="txt_pincode" width="100%" maxChars="10" restrict="0-9"/>
+			</s:FormItem>
+			<s:FormItem label="Telephone">
+				<s:HGroup width="100%" verticalAlign="middle" gap="15">	
+					<s:TextInput id="txt_areacode" width="50" maxChars="4" restrict="0-9"/>
+					<s:TextInput id="txt_phoneno" width="100%" maxChars="6" restrict="0-9"/>
+				</s:HGroup>
+			</s:FormItem>
+			<s:FormItem label="Mobile">
+				<s:HGroup width="100%" verticalAlign="middle" gap="15">	
+					<s:Label text="+91"/>
+					<s:TextInput id="txt_mobileno" width="100%" maxChars="10" restrict="0-9"/>
+				</s:HGroup>
+			</s:FormItem>
+		</s:Form> 
+	</s:HGroup>
+		
+	<s:HGroup height="210" width="100%" gap="10">
+		<components:GenericDataGrid id="dg_activeitems" width="100%" height="100%" dataProvider="{addEditMemberHelper.model.collEditableMembersDetail}">
+			<components:columns>
+				<s:ArrayList>
+					<s:GridColumn headerText="First Name" dataField="firstName" />
+					<s:GridColumn headerText="Nick Name" dataField="nickName" />
+					<s:GridColumn headerText="Mobile No" dataField="mobileNo" />
+				</s:ArrayList>
+			</components:columns>
+		</components:GenericDataGrid>
+		
+		<s:VGroup height="100%" horizontalAlign="center" verticalAlign="middle" gap="10">
+			<components:ActionButton id="btn_add" label="Add" width="100" click="addEditMemberHelper.addMemberDetails();" />
+			<components:ActionButton id="btn_save" label="Save" width="100" click="addEditMemberHelper.saveMemberDetails();"/>
+			<components:ActionButton id="btn_delete" label="Delete" width="100" 
+									 enabled="{ (( addEditMemberHelper.viewMode == MasterGlobeConstants.ADD_MEMBER_MODE) &amp;&amp; (addEditMemberHelper.model.collEditableMembersDetail.length > 0)) }" 
+									 click="addEditMemberHelper.deleteSelectedItemFromCollection();"/>
+			<components:ActionButton id="btn_cancel" label="Cancel" width="100" click="addEditMemberHelper.closePopup();"/>
+		</s:VGroup>
+	</s:HGroup>
+</s:TitleWindow>

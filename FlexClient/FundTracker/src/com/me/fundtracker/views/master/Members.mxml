@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Panel xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 xmlns:components="com.me.fundtracker.components.*" 
+		 xmlns:viewhelpers="com.me.fundtracker.views.master.viewhelpers.*"
+		 width="100%" height="100%" title="Members Management"
+		 initialize="memberViewHelper.onInit();"
+		 creationComplete="memberViewHelper.getAllMembers();">
+		<s:layout>
+			<s:HorizontalLayout paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" />
+		</s:layout>
+	
+		<fx:Script>
+			<![CDATA[
+				import com.me.fundtracker.utils.master.MasterGlobeConstants;
+			]]>
+		</fx:Script>
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->		
+		<viewhelpers:MemberViewHelper id="memberViewHelper" />
+	</fx:Declarations>
+	
+	<s:VGroup width="100%" height="100%" gap="10">
+		<s:HGroup width="100%" paddingRight="10">
+			<components:SearchBar id="searchBar" searchListCollection="{memberViewHelper.model.collMembersDetail}" dataGrid="{dg_memberdetails}"/>
+			<s:Spacer width="100%" />
+			<components:ActionButton label="Add New" width="110" click="memberViewHelper.addMemberDetails();"/>
+			<components:ActionButton label="Edit" width="110" click="memberViewHelper.editMemberDetails();"/>
+			<components:ActionButton label="Delete" width="110" click="memberViewHelper.confirmDeleteMemberDetails();"/>
+			<components:ActionButton label="Cancel" width="110" click="memberViewHelper.showHomePage();" />
+		</s:HGroup>
+		
+		<components:GenericDataGrid id="dg_memberdetails" width="100%" height="100%"
+									selectedItem="{memberViewHelper.model.membersGridSelectedItem}"
+									dataProvider="{memberViewHelper.model.collMembersDetail}"
+									doubleClickEnabled="true" doubleClick="memberViewHelper.editMemberDetails();">
+			<components:columns>
+				<s:ArrayList>
+					<s:GridColumn headerText="First Name" dataField="firstName" />
+					<s:GridColumn headerText="Last Name" dataField="lastName" />
+					<s:GridColumn headerText="Nick Name" dataField="nickName"/>
+					<s:GridColumn headerText="Gender" dataField="gender" />
+					<s:GridColumn headerText="Address" dataField="address" />
+					<s:GridColumn headerText="City" dataField="city"/>
+					<s:GridColumn headerText="Pincode" dataField="pincode" />
+					<s:GridColumn headerText="Telephone no" dataField="telephoneNo" />
+					<s:GridColumn headerText="Mobile No" dataField="mobileNo"/>
+					<s:GridColumn headerText="Active" dataField="active">
+						<s:itemRenderer>
+							<fx:Component>
+								<s:GridItemRenderer>
+									<s:HGroup width="100%" height="100%" verticalAlign="middle" paddingLeft="10">
+										<s:CheckBox enabled="false" selected="{((parseInt(data.active) == 1) ? true : false)}" horizontalCenter="0"/>
+									</s:HGroup>
+								</s:GridItemRenderer>
+							</fx:Component>
+						</s:itemRenderer>
+					</s:GridColumn>
+				</s:ArrayList>
+			</components:columns>
+		</components:GenericDataGrid>
+	</s:VGroup>	
+</s:Panel>

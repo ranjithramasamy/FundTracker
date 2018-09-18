@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:components="com.me.fundtracker.components.*"
+		 xmlns:helpers="com.me.fundtracker.components.helpers.*"
+		 width="100%" height="35" borderVisible="false"
+		 initialize="filterBarHelper.onInit();">
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<helpers:FilterBarHelper id="filterBarHelper" />
+	</fx:Declarations>
+	
+	<fx:Metadata>
+		[Event(name="refresh", type="com.me.fundtracker.events.components.InteractiveComponentEvent")]
+	</fx:Metadata>
+	
+	<fx:Script>
+		<![CDATA[
+
+			/**
+			 * From Date. 
+			 */	
+			private var _fromDate : Date;
+			/**
+			 * To Date. 
+			 */	
+			private var _toDate : Date;
+			
+			/**
+			 * From Date.
+			 */	
+			public function get fromDate() : Date
+			{
+				return _fromDate;
+			}
+			
+			public function set fromDate( value : Date ) : void
+			{
+				_fromDate = value;
+				date_from.selectedDate = value;
+			}
+			/**
+			 * To Date.
+			 */
+			public function get toDate() : Date
+			{
+				return _toDate;
+			}
+			
+			public function set toDate( value : Date ) : void
+			{
+				_toDate = value;
+				date_to.selectedDate = value;
+			}
+		]]>
+	</fx:Script>
+	
+	<s:Rect x="0" y="0" height="100%" width="100%">
+		<s:fill> 
+			<s:LinearGradient rotation="90">
+				<s:GradientEntry color="0xC4DF9B" />
+				<s:GradientEntry color="0xA3D39C" />
+			</s:LinearGradient>
+		</s:fill>
+		<s:stroke>
+			<s:SolidColorStroke color="0xA3D39C"/>
+		</s:stroke>
+	</s:Rect>
+	
+	<s:HGroup x="0" y="0" width="100%" height="100%" gap="10" verticalAlign="middle" paddingLeft="10" paddingRight="8">
+		<s:Label text="Filter By:" />
+		<mx:DateField id="date_from" width="120" yearNavigationEnabled="true"/>
+		<mx:DateField id="date_to" width="120" yearNavigationEnabled="true"/>
+		<components:ActionButton id="btn_refresh" label="Refresh" width="120" click="filterBarHelper.dispatchRefreshEvent();"/>
+	</s:HGroup>
+</s:BorderContainer>

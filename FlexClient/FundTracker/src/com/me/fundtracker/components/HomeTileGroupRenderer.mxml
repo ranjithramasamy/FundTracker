@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Button xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 width="120" height="120" fontSize="12" fontWeight="bold"
+		 styleName="tileGroupButton"
+		 initialize="createPopMenu();" click="showPopMenu();">
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import com.me.fundtracker.model.FundTrackerModelLocator;
+			import com.me.fundtracker.utils.FundTrackerUtil;
+			import com.me.fundtracker.utils.GlobalConstants;
+			
+			import mx.controls.Alert;
+			import mx.controls.Menu;
+			import mx.events.MenuEvent;
+			import mx.managers.PopUpManager;
+			
+			[Bindable]
+			private var _model : FundTrackerModelLocator = FundTrackerModelLocator.getInstance();
+			private var _fundTrackerUtil : FundTrackerUtil = FundTrackerUtil.getInstance();
+			private var _menuDataProvider : Array;
+			private var _menuDataProviderChanged : Boolean = false;
+			private var _leaf : Boolean;
+			private var _menu : Menu;
+			
+			public function set menuDataProvider ( value : Array ) : void{
+				_menuDataProvider = value;
+				
+				_menuDataProviderChanged = true;
+			}
+			
+			public function get menuDataProvider() : Array{
+				return _menuDataProvider;
+			}
+			
+			public function set leaf ( value : Boolean ) : void{
+				_leaf = value;
+			}
+			
+			public function get leaf() : Boolean{
+				return _leaf;
+			}
+			
+			/**
+			 *  @private
+			 */ 
+			override protected function commitProperties():void
+			{
+				super.commitProperties();
+				
+				if (_menuDataProviderChanged)
+				{
+					_menuDataProviderChanged = false;
+					
+					if (_menu)
+						_menu.dataProvider = _menuDataProvider;
+				}
+			}
+			
+			private function createPopMenu() : void{
+				_menu = Menu.createMenu(null, _menuDataProvider, false);
+				
+				_menu.labelField = GlobalConstants.MENU_LIST_LABEL_FIELD;
+				// Add an event listener for the itemClick event.
+				_menu.addEventListener(MenuEvent.ITEM_CLICK, menuItemClickHandler);
+				_menu.addEventListener(MenuEvent.MENU_HIDE, menuHideHandler);
+			}
+			
+			private function menuItemClickHandler( event : MenuEvent ) : void{
+				_model.isPopMenuOpened = false;
+
+				if ( event.item != null )
+					_fundTrackerUtil.changeView( event.item.eventType );
+			}
+			
+			private function menuHideHandler( event : MenuEvent ) : void
+			{
+				_model.isPopMenuOpened = false;
+			}
+				
+			private function showPopMenu() : void{
+				if (!_leaf){
+					var point : Point = this.localToGlobal(new Point(0, 0));
+				
+					if (_menu && !_model.isPopMenuOpened)
+					{
+						_menu.show((point.x + (this.width / 2)), (point.y + (this.height / 2)));
+						_model.isPopMenuOpened = true;
+					}
+				}
+				else{
+					if (label.toLowerCase() == GlobalConstants.APP_EXIT)
+						_model.fundTrackerEventDispatcher.dispatchShowLoginPageEvent();
+				}
+			}
+		]]>
+	</fx:Script>	
+</s:Button>

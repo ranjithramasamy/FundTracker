@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Panel xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 xmlns:components="com.me.fundtracker.components.*" 
+		 xmlns:viewhelpers="com.me.fundtracker.views.transaction.viewhelpers.*"
+		 width="100%" height="100%" title="Donation"
+		 initialize="donationViewHelper.onInit();"
+		 creationComplete="donationViewHelper.onComplete();">
+	<s:layout>
+		<s:HorizontalLayout paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" />
+	</s:layout>
+	
+	<fx:Script>
+		<![CDATA[
+			import com.me.fundtracker.utils.master.MasterGlobeConstants;
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->		
+		<viewhelpers:DonationViewHelper id="donationViewHelper" />
+	</fx:Declarations>
+	
+	<s:VGroup width="100%" height="100%" gap="10">
+		<s:HGroup width="100%" paddingRight="10">
+			<components:FilterBar id="filter_comp" width="100%" refresh="donationViewHelper.getAllDonationDetailsByDate();" />
+			<s:Spacer width="100%" />
+			<components:ActionButton label="Add New" width="110" click="donationViewHelper.addNewDonationDetail();"/>
+			<components:ActionButton label="Edit" width="110" click="donationViewHelper.editDonationDetails();"/>
+			<components:ActionButton label="Delete" width="110" click="donationViewHelper.confirmDeleteDonationDetails();"/>
+			<components:ActionButton label="Cancel" width="110" click="donationViewHelper.showHomePage();" />
+		</s:HGroup>
+		
+		<components:GenericDataGrid id="dg_donationdetails" width="100%" height="100%"
+									selectedItem="{donationViewHelper.model.donationGridSelectedItem}"
+									dataProvider="{donationViewHelper.model.collAllDonationDetails}"
+									doubleClickEnabled="true" doubleClick="donationViewHelper.editDonationDetails();">
+			<components:columns>
+				<s:ArrayList>
+					<s:GridColumn headerText="Date" dataField="date" />
+					<s:GridColumn headerText="Donated By" dataField="donatedBy"/>
+					<s:GridColumn headerText="Donation For" dataField="donationFor" />
+					<s:GridColumn headerText="Amount" dataField="amount" labelFunction="{donationViewHelper.formatAmount}" />
+				</s:ArrayList>
+			</components:columns>
+		</components:GenericDataGrid>
+	</s:VGroup>	
+</s:Panel>

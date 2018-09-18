@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 verticalCenter="0" horizontalCenter="0"
+		 initialize="createMenuWidgets();">
+	<s:layout>
+		<s:BasicLayout/>
+	</s:layout> 
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.me.fundtracker.utils.GlobalConstants;
+			import com.me.fundtracker.components.HomeTileGroupRenderer;
+
+			private function createMenuWidgets() : void
+			{
+				var tileListRenderer : HomeTileGroupRenderer;
+				
+				for each ( var item : Object in GlobalConstants.MENU_LIST ){
+					tileListRenderer = new HomeTileGroupRenderer();
+					tileListRenderer.label = item.title;
+					tileListRenderer.leaf = item.leaf;
+					tileListRenderer.menuDataProvider = item.list as Array; 
+					tileGroup.addElement(tileListRenderer);
+				}
+			}
+		]]>
+	</fx:Script>
+	
+	<s:TileGroup id="tileGroup" />
+</s:Group>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Panel xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:components="com.me.fundtracker.components.*"
+		 xmlns:viewhelpers="com.me.fundtracker.views.viewhelpers.*"
+		 verticalCenter="0" horizontalCenter="0"
+		 title="Login" initialize="loginViewHelper.onInit();">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<viewhelpers:LoginViewHelper id="loginViewHelper" />	
+	</fx:Declarations>
+	
+	<s:Form>
+		<s:layout>
+			<s:FormLayout gap="10"/>
+		</s:layout>
+		<s:FormItem label="Username">
+			<s:TextInput id="txt_username" width="150" text="ranjith" enter="loginViewHelper.switchToPasswordField();" />
+		</s:FormItem>
+		<s:FormItem label="Password">
+			<s:TextInput id="txt_password" text="ramasamy" displayAsPassword="true" width="150" enter="loginViewHelper.validate();" />
+		</s:FormItem>
+		
+		<s:FormItem>
+			<components:ActionButton id="btn_login" label="Login" width="100" click="loginViewHelper.validate();" />
+		</s:FormItem>	
+	</s:Form>	
+</s:Panel>

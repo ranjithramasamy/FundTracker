@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin buttonMode="true" useHandCursor="true" height="40"
+		xmlns:local="assets.skins.Blue.*"
+		xmlns:fx="http://ns.adobe.com/mxml/2009"
+		xmlns:s="library://ns.adobe.com/flex/spark"
+		xmlns:mx="library://ns.adobe.com/flex/halo">
+	<fx:Metadata>
+			  [HostComponent("spark.components.Button")]		
+	</fx:Metadata>
+	<s:states>
+		<s:State name="up"/>
+		<s:State name="down"/>
+		<s:State name="over"/>
+		<s:State name="disabled"/>
+	</s:states>
+	<s:transitions>
+		<s:Transition autoReverse="true" fromState="*" toState="disabled" >
+			<s:Fade alphaFrom="1" alphaTo="0.3" duration="350" targets="{[labelDisplay,mainButtonPart]}" />
+		</s:Transition>
+		<s:Transition autoReverse="true" fromState="disabled" toState="*" >
+			<s:Fade alphaFrom="0.3" alphaTo="1" duration="350"  targets="{[labelDisplay,mainButtonPart]}" />
+		</s:Transition>
+		<s:Transition   fromState="up" toState="over" autoReverse="true" >
+            <s:AnimateColor  targets="{[ge1, ge2, ge3, ge4]}"  duration="250" />
+        </s:Transition>
+        <s:Transition   fromState="over" toState="up" autoReverse="true" >
+            <s:AnimateColor  targets="{[ge1, ge2, ge3, ge4]}"  duration="250" />
+        </s:Transition>
+        <s:Transition   fromState="*" toState="down" autoReverse="true" >
+            <s:AnimateColor  targets="{[ge1, ge2, ge3, ge4]}"  duration="70" />
+        </s:Transition>
+        <s:Transition   fromState="down" toState="*" autoReverse="true" >
+            <s:AnimateColor  targets="{[ge1, ge2, ge3, ge4]}"  duration="250" />
+        </s:Transition>
+
+	</s:transitions>
+	<!--<local:ShadowSkin  width="{hostComponent.width}"
+					   height="{hostComponent.height}"/>-->
+	<s:Rect radiusY="10"
+				radiusX="10" id="mainButtonPart"
+				x="5"  
+				y="4"
+				width="{hostComponent.width-10}"
+				height="{hostComponent.height-10}">
+			<s:filters>
+				<s:BevelFilter angle="45" 
+							   distance="1"  strength="2"
+							   highlightColor="0xffffff"
+							   type="{BitmapFilterType.INNER}"/>
+			</s:filters>
+			<s:fill>
+				<s:LinearGradient  rotation="-90">
+					<s:GradientEntry id="ge1" color="0x387dda" color.over="0x3e81de" color.down="0x88bafe" />
+					<s:GradientEntry id="ge2" ratio="0.5"
+									  color="0x65a7ff" color.over="0x6facfe" color.down="0x66a0ef" />
+					<s:GradientEntry id="ge3" ratio="0.51"
+									  color="0x7fb6ff" color.over="0x8ebdfe" color.down="0x66a0ef" />
+					<s:GradientEntry id="ge4" color="0x8bbcff" color.over="0xe2efff" color.down="0x2f63aa"/>
+				</s:LinearGradient>
+			</s:fill>
+			<s:stroke>
+				<s:SolidColorStroke color="0x6aa3f1" 
+									 pixelHinting="true"
+									 alpha="1"/>
+			</s:stroke>
+		</s:Rect>
+		
+		<s:Label color="0xffffff" height="{this.height}" width="{this.width}" textAlign="center" verticalAlign="middle" id="labelDisplay" >			
+			<s:filters>
+				<s:DropShadowFilter distance="1" distance.down="2" alpha="0.4" />
+			</s:filters>
+		</s:Label>
+		<fx:Script>
+			<![CDATA[
+			import flash.filters.BitmapFilterType;				
+			]]>
+		</fx:Script>
+</s:Skin>
